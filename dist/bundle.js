@@ -7706,6 +7706,19 @@
 	  fill: "black"
 	}));
 
+	function range(start, stop, step) {
+	  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+	  var i = -1,
+	      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+	      range = new Array(n);
+
+	  while (++i < n) {
+	    range[i] = start + i * step;
+	  }
+
+	  return range;
+	}
+
 	const pi$1 = Math.PI,
 	      tau$1 = 2 * pi$1,
 	      epsilon$1 = 1e-6,
@@ -8122,21 +8135,22 @@
 	  mouthWidth: mouthWidth
 	}));
 
-	const width = 960;
-	const height = 500;
+	const width = 240;
+	const height = 125;
+	const array = range(4 * 4);
 
-	const App = () => /*#__PURE__*/React.createElement(Face, {
+	const App = () => array.map(() => /*#__PURE__*/React.createElement(Face, {
 	  width: width,
 	  height: height,
 	  centerX: width / 2,
 	  centerY: height / 2,
-	  strokeWidth: 10,
-	  eyeOffsetX: 90,
-	  eyeOffsetY: 90,
-	  eyeRadius: 40,
-	  mouthRadius: 20,
-	  mouthWidth: 30
-	});
+	  strokeWidth: 1 + Math.random() * 10,
+	  eyeOffsetX: 9 + Math.random() * 10,
+	  eyeOffsetY: 9 + Math.random() * 10,
+	  eyeRadius: 4 + Math.random() * 10,
+	  mouthRadius: 2 + Math.random() * 10,
+	  mouthWidth: 3 + Math.random() * 10
+	}));
 
 	const rootElement = document.getElementById('root');
 	ReactDOM.render( /*#__PURE__*/React$1.createElement(App, null), rootElement);
