@@ -1,4 +1,5 @@
 import { arc } from 'd3';
+import { BackgroundCircle } from "./BackgroundCircle";
 
 const width = 960;
 const height = 500;
@@ -19,19 +20,10 @@ const mouthArc = arc()
   .startAngle(Math.PI * .5)
   .endAngle(Math.PI * 1.5);
 
-const BackgroundCircle = ({ radius }) => (
-  <circle
-    r={radius}
-    fill="gold"
-    stroke="black"
-    strokeWidth={strokeWidth}>
-  </circle>
-)
-
 const App = () => (
   <svg width={width} height={height}>
     <g transform={`translate(${centerX}, ${centerY})`}>
-      <BackgroundCircle radius={centerY - strokeWidth / 2} />
+      <BackgroundCircle radius={centerY - strokeWidth / 2} strokeWidth={strokeWidth} />
       <circle cx={-eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
       </circle>
       <circle cx={+eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
