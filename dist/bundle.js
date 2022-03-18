@@ -8081,22 +8081,35 @@
 	  });
 	};
 
-	const width = 960;
-	const height = 500;
-	const centerX = width / 2;
-	const centerY = height / 2;
-	const strokeWidth = 10;
-	const eyeOffsetX = 90;
-	const eyeOffsetY = 90;
-	const eyeRadius = 40;
-	const mouthRadius = 20;
-	const mouthWidth = 30;
-
-	const App = () => /*#__PURE__*/React.createElement("svg", {
+	const FaceContainer = ({
+	  children,
+	  width,
+	  height,
+	  centerX,
+	  centerY
+	}) => /*#__PURE__*/React.createElement("svg", {
 	  width: width,
 	  height: height
 	}, /*#__PURE__*/React.createElement("g", {
 	  transform: `translate(${centerX}, ${centerY})`
+	}, children));
+
+	const Face = ({
+	  width,
+	  height,
+	  centerX,
+	  centerY,
+	  strokeWidth,
+	  eyeOffsetX,
+	  eyeOffsetY,
+	  eyeRadius,
+	  mouthRadius,
+	  mouthWidth
+	}) => /*#__PURE__*/React.createElement(FaceContainer, {
+	  width: width,
+	  height: height,
+	  centerX: centerX,
+	  centerY: centerY
 	}, /*#__PURE__*/React.createElement(BackgroundCircle, {
 	  radius: centerY - strokeWidth / 2,
 	  strokeWidth: strokeWidth
@@ -8107,7 +8120,26 @@
 	}), /*#__PURE__*/React.createElement(Mouth, {
 	  mouthRadius: mouthRadius,
 	  mouthWidth: mouthWidth
-	})));
+	}));
+
+	const width = 960;
+	const height = 500;
+	const centerY = height / 2;
+	const strokeWidth = 10;
+
+	const App = () => /*#__PURE__*/React.createElement(Face, {
+	  width: 960,
+	  height: 500,
+	  centerX: width / 2,
+	  centerY: height / 2,
+	  strokeWidth: 10,
+	  radius: centerY - strokeWidth / 2,
+	  eyeOffsetX: 90,
+	  eyeOffsetY: 90,
+	  eyeRadius: 40,
+	  mouthRadius: 20,
+	  mouthWidth: 30
+	});
 
 	const rootElement = document.getElementById('root');
 	ReactDOM.render( /*#__PURE__*/React$1.createElement(App, null), rootElement);

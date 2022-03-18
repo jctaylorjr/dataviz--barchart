@@ -1,6 +1,4 @@
-import { BackgroundCircle } from "./BackgroundCircle";
-import { Eyes } from "./Eyes";
-import { Mouth } from "./Mouth";
+import { Face } from "./Face";
 
 const width = 960;
 const height = 500;
@@ -16,13 +14,19 @@ const mouthRadius = 20;
 const mouthWidth = 30;
 
 const App = () => (
-  <svg width={width} height={height}>
-    <g transform={`translate(${centerX}, ${centerY})`}>
-      <BackgroundCircle radius={centerY - strokeWidth / 2} strokeWidth={strokeWidth} />
-      <Eyes eyeOffsetX={eyeOffsetX} eyeOffsetY={eyeOffsetY} eyeRadius={eyeRadius} />
-      <Mouth mouthRadius={mouthRadius} mouthWidth={mouthWidth} />
-    </g>
-  </svg >
+  <Face
+    width={960}
+    height={500}
+    centerX={width / 2}
+    centerY={height / 2}
+    strokeWidth={10}
+    radius={centerY - strokeWidth / 2}
+    eyeOffsetX={90}
+    eyeOffsetY={90}
+    eyeRadius={40}
+    mouthRadius={20}
+    mouthWidth={30}
+  />
 );
 
 export default App;
