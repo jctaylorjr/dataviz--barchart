@@ -22,9 +22,9 @@ const App = () => (
     <g transform={`translate(${centerX}, ${centerY})`}>
       <circle r={radius} fill="gold" stroke="black" strokeWidth={strokeWidth}>
       </circle>
-      <circle cx={- eyeOffsetX} cy={- eyeOffsetY} r={eyeRadius} fill="black">
+      <circle cx={-eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
       </circle>
-      <circle cx={+eyeOffsetX} cy={- eyeOffsetY} r={eyeRadius} fill="black">
+      <circle cx={+eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
       </circle>
       <path d={mouthArc()} />
     </g>
