@@ -7677,6 +7677,35 @@
 
 	var ReactDOM = reactDom.exports;
 
+	const BackgroundCircle = ({
+	  radius,
+	  strokeWidth
+	}) => /*#__PURE__*/React.createElement("circle", {
+	  r: radius,
+	  fill: "gold",
+	  stroke: "black",
+	  strokeWidth: strokeWidth
+	});
+
+	const Eyes = ({
+	  eyeOffsetX,
+	  eyeOffsetY,
+	  eyeRadius
+	}) =>
+	/*#__PURE__*/
+	// react fragments have empty brackets 
+	React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("circle", {
+	  cx: -eyeOffsetX,
+	  cy: -eyeOffsetY,
+	  r: eyeRadius,
+	  fill: "black"
+	}), /*#__PURE__*/React.createElement("circle", {
+	  cx: +eyeOffsetX,
+	  cy: -eyeOffsetY,
+	  r: eyeRadius,
+	  fill: "black"
+	}));
+
 	const pi$1 = Math.PI,
 	      tau$1 = 2 * pi$1,
 	      epsilon$1 = 1e-6,
@@ -8042,15 +8071,15 @@
 	  return arc;
 	}
 
-	const BackgroundCircle = ({
-	  radius,
-	  strokeWidth
-	}) => /*#__PURE__*/React.createElement("circle", {
-	  r: radius,
-	  fill: "gold",
-	  stroke: "black",
-	  strokeWidth: strokeWidth
-	});
+	const Mouth = ({
+	  mouthRadius,
+	  mouthWidth
+	}) => {
+	  const mouthArc = arc().innerRadius(mouthRadius).outerRadius(mouthWidth).startAngle(Math.PI * .5).endAngle(Math.PI * 1.5);
+	  return /*#__PURE__*/React.createElement("path", {
+	    d: mouthArc()
+	  });
+	};
 
 	const width = 960;
 	const height = 500;
@@ -8062,7 +8091,6 @@
 	const eyeRadius = 40;
 	const mouthRadius = 20;
 	const mouthWidth = 30;
-	const mouthArc = arc().innerRadius(mouthRadius).outerRadius(mouthWidth).startAngle(Math.PI * .5).endAngle(Math.PI * 1.5);
 
 	const App = () => /*#__PURE__*/React.createElement("svg", {
 	  width: width,
@@ -8072,18 +8100,13 @@
 	}, /*#__PURE__*/React.createElement(BackgroundCircle, {
 	  radius: centerY - strokeWidth / 2,
 	  strokeWidth: strokeWidth
-	}), /*#__PURE__*/React.createElement("circle", {
-	  cx: -eyeOffsetX,
-	  cy: -eyeOffsetY,
-	  r: eyeRadius,
-	  fill: "black"
-	}), /*#__PURE__*/React.createElement("circle", {
-	  cx: +eyeOffsetX,
-	  cy: -eyeOffsetY,
-	  r: eyeRadius,
-	  fill: "black"
-	}), /*#__PURE__*/React.createElement("path", {
-	  d: mouthArc()
+	}), /*#__PURE__*/React.createElement(Eyes, {
+	  eyeOffsetX: eyeOffsetX,
+	  eyeOffsetY: eyeOffsetY,
+	  eyeRadius: eyeRadius
+	}), /*#__PURE__*/React.createElement(Mouth, {
+	  mouthRadius: mouthRadius,
+	  mouthWidth: mouthWidth
 	})));
 
 	const rootElement = document.getElementById('root');

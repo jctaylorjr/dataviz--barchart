@@ -1,5 +1,6 @@
-import { arc } from 'd3';
 import { BackgroundCircle } from "./BackgroundCircle";
+import { Eyes } from "./Eyes";
+import { Mouth } from "./Mouth";
 
 const width = 960;
 const height = 500;
@@ -14,21 +15,12 @@ const eyeRadius = 40;
 const mouthRadius = 20;
 const mouthWidth = 30;
 
-const mouthArc = arc()
-  .innerRadius(mouthRadius)
-  .outerRadius(mouthWidth)
-  .startAngle(Math.PI * .5)
-  .endAngle(Math.PI * 1.5);
-
 const App = () => (
   <svg width={width} height={height}>
     <g transform={`translate(${centerX}, ${centerY})`}>
       <BackgroundCircle radius={centerY - strokeWidth / 2} strokeWidth={strokeWidth} />
-      <circle cx={-eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
-      </circle>
-      <circle cx={+eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
-      </circle>
-      <path d={mouthArc()} />
+      <Eyes eyeOffsetX={eyeOffsetX} eyeOffsetY={eyeOffsetY} eyeRadius={eyeRadius} />
+      <Mouth mouthRadius={mouthRadius} mouthWidth={mouthWidth} />
     </g>
   </svg >
 );
