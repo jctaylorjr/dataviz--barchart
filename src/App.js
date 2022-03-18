@@ -10,10 +10,12 @@ const radius = centerY - strokeWidth / 2;
 const eyeOffsetX = 90;
 const eyeOffsetY = 90;
 const eyeRadius = 40;
+const mouthRadius = 20;
+const mouthWidth = 30;
 
 const mouthArc = arc()
-  .innerRadius(90)
-  .outerRadius(100)
+  .innerRadius(mouthRadius)
+  .outerRadius(mouthWidth)
   .startAngle(Math.PI * .5)
   .endAngle(Math.PI * 1.5);
 
