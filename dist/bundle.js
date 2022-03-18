@@ -8124,16 +8124,13 @@
 
 	const width = 960;
 	const height = 500;
-	const centerY = height / 2;
-	const strokeWidth = 10;
 
 	const App = () => /*#__PURE__*/React.createElement(Face, {
-	  width: 960,
-	  height: 500,
+	  width: width,
+	  height: height,
 	  centerX: width / 2,
 	  centerY: height / 2,
 	  strokeWidth: 10,
-	  radius: centerY - strokeWidth / 2,
 	  eyeOffsetX: 90,
 	  eyeOffsetY: 90,
 	  eyeRadius: 40,
