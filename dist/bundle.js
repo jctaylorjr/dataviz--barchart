@@ -7677,6 +7677,48 @@
 
 	var ReactDOM = reactDom.exports;
 
+	const BackgroundCircle = ({
+	  radius,
+	  strokeWidth
+	}) => /*#__PURE__*/React.createElement("circle", {
+	  r: radius,
+	  fill: "gold",
+	  stroke: "black",
+	  strokeWidth: strokeWidth
+	});
+
+	const Eyes = ({
+	  eyeOffsetX,
+	  eyeOffsetY,
+	  eyeRadius
+	}) =>
+	/*#__PURE__*/
+	// react fragments have empty brackets 
+	React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("circle", {
+	  cx: -eyeOffsetX,
+	  cy: -eyeOffsetY,
+	  r: eyeRadius,
+	  fill: "black"
+	}), /*#__PURE__*/React.createElement("circle", {
+	  cx: +eyeOffsetX,
+	  cy: -eyeOffsetY,
+	  r: eyeRadius,
+	  fill: "black"
+	}));
+
+	function range(start, stop, step) {
+	  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+	  var i = -1,
+	      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+	      range = new Array(n);
+
+	  while (++i < n) {
+	    range[i] = start + i * step;
+	  }
+
+	  return range;
+	}
+
 	const pi$1 = Math.PI,
 	      tau$1 = 2 * pi$1,
 	      epsilon$1 = 1e-6,
@@ -8042,47 +8084,73 @@
 	  return arc;
 	}
 
-	const width = 960;
-	const height = 500;
-	const centerX = width / 2;
-	const centerY = height / 2;
-	const strokeWidth = 10;
-	const eyeOffsetX = 90;
-	const eyeOffsetY = 90;
-	const eyeRadius = 40;
-	const mouthRadius = 20;
-	const mouthWidth = 30;
-	const mouthArc = arc().innerRadius(mouthRadius).outerRadius(mouthWidth).startAngle(Math.PI * .5).endAngle(Math.PI * 1.5);
+	const Mouth = ({
+	  mouthRadius,
+	  mouthWidth
+	}) => {
+	  const mouthArc = arc().innerRadius(mouthRadius).outerRadius(mouthWidth).startAngle(Math.PI * .5).endAngle(Math.PI * 1.5);
+	  return /*#__PURE__*/React.createElement("path", {
+	    d: mouthArc()
+	  });
+	};
 
-	const BackgroundCircle = ({
-	  radius
-	}) => /*#__PURE__*/React.createElement("circle", {
-	  r: radius,
-	  fill: "gold",
-	  stroke: "black",
-	  strokeWidth: strokeWidth
-	});
-
-	const App = () => /*#__PURE__*/React.createElement("svg", {
+	const FaceContainer = ({
+	  children,
+	  width,
+	  height,
+	  centerX,
+	  centerY
+	}) => /*#__PURE__*/React.createElement("svg", {
 	  width: width,
 	  height: height
 	}, /*#__PURE__*/React.createElement("g", {
 	  transform: `translate(${centerX}, ${centerY})`
+	}, children));
+
+	const Face = ({
+	  width,
+	  height,
+	  centerX,
+	  centerY,
+	  strokeWidth,
+	  eyeOffsetX,
+	  eyeOffsetY,
+	  eyeRadius,
+	  mouthRadius,
+	  mouthWidth
+	}) => /*#__PURE__*/React.createElement(FaceContainer, {
+	  width: width,
+	  height: height,
+	  centerX: centerX,
+	  centerY: centerY
 	}, /*#__PURE__*/React.createElement(BackgroundCircle, {
-	  radius: centerY - strokeWidth / 2
-	}), /*#__PURE__*/React.createElement("circle", {
-	  cx: -eyeOffsetX,
-	  cy: -eyeOffsetY,
-	  r: eyeRadius,
-	  fill: "black"
-	}), /*#__PURE__*/React.createElement("circle", {
-	  cx: +eyeOffsetX,
-	  cy: -eyeOffsetY,
-	  r: eyeRadius,
-	  fill: "black"
-	}), /*#__PURE__*/React.createElement("path", {
-	  d: mouthArc()
-	})));
+	  radius: centerY - strokeWidth / 2,
+	  strokeWidth: strokeWidth
+	}), /*#__PURE__*/React.createElement(Eyes, {
+	  eyeOffsetX: eyeOffsetX,
+	  eyeOffsetY: eyeOffsetY,
+	  eyeRadius: eyeRadius
+	}), /*#__PURE__*/React.createElement(Mouth, {
+	  mouthRadius: mouthRadius,
+	  mouthWidth: mouthWidth
+	}));
+
+	const width = 240;
+	const height = 125;
+	const array = range(4 * 4);
+
+	const App = () => array.map(() => /*#__PURE__*/React.createElement(Face, {
+	  width: width,
+	  height: height,
+	  centerX: width / 2,
+	  centerY: height / 2,
+	  strokeWidth: 1 + Math.random() * 10,
+	  eyeOffsetX: 9 + Math.random() * 10,
+	  eyeOffsetY: 9 + Math.random() * 10,
+	  eyeRadius: 4 + Math.random() * 10,
+	  mouthRadius: 2 + Math.random() * 10,
+	  mouthWidth: 3 + Math.random() * 10
+	}));
 
 	const rootElement = document.getElementById('root');
 	ReactDOM.render( /*#__PURE__*/React$1.createElement(App, null), rootElement);

@@ -1,44 +1,25 @@
-import { arc } from 'd3';
+import { Face } from './Face';
+import { range } from 'd3';
 
-const width = 960;
-const height = 500;
-const centerX = width / 2;
-const centerY = height / 2;
-const strokeWidth = 10;
-const radius = centerY - strokeWidth / 2;
+const width = 240;
+const height = 125;
 
-const eyeOffsetX = 90;
-const eyeOffsetY = 90;
-const eyeRadius = 40;
-const mouthRadius = 20;
-const mouthWidth = 30;
+const array = range(4 * 4);
 
-const mouthArc = arc()
-  .innerRadius(mouthRadius)
-  .outerRadius(mouthWidth)
-  .startAngle(Math.PI * .5)
-  .endAngle(Math.PI * 1.5);
-
-const BackgroundCircle = ({ radius }) => (
-  <circle
-    r={radius}
-    fill="gold"
-    stroke="black"
-    strokeWidth={strokeWidth}>
-  </circle>
-)
-
-const App = () => (
-  <svg width={width} height={height}>
-    <g transform={`translate(${centerX}, ${centerY})`}>
-      <BackgroundCircle radius={centerY - strokeWidth / 2} />
-      <circle cx={-eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
-      </circle>
-      <circle cx={+eyeOffsetX} cy={-eyeOffsetY} r={eyeRadius} fill="black">
-      </circle>
-      <path d={mouthArc()} />
-    </g>
-  </svg >
-);
+const App = () =>
+	array.map(() => (
+		<Face
+			width={width}
+			height={height}
+			centerX={width / 2}
+			centerY={height / 2}
+			strokeWidth={1 + Math.random() * 10}
+			eyeOffsetX={9 + Math.random() * 10}
+			eyeOffsetY={9 + Math.random() * 10}
+			eyeRadius={4 + Math.random() * 10}
+			mouthRadius={2 + Math.random() * 10}
+			mouthWidth={3 + Math.random() * 10}
+		/>
+	));
 
 export default App;
