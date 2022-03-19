@@ -7687,8 +7687,7 @@
 
 	const App = () => {
 	  const [mousePosition, setMousePosition] = react.exports.useState(initialMousePosition);
-
-	  const handleMouseMove = event => {
+	  const handleMouseMove = react.exports.useCallback(event => {
 	    const {
 	      clientX,
 	      clientY
@@ -7697,8 +7696,7 @@
 	      x: clientX,
 	      y: clientY
 	    });
-	  };
-
+	  }, [setMousePosition]);
 	  return /*#__PURE__*/React.createElement("svg", {
 	    width: width,
 	    height: height,
