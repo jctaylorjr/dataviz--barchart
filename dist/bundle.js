@@ -8047,7 +8047,6 @@
 	const centerX = width / 2;
 	const centerY = height / 2;
 	const strokeWidth = 10;
-	const radius = centerY - strokeWidth / 2;
 	const eyeOffsetX = 90;
 	const eyeOffsetY = 90;
 	const eyeRadius = 40;
@@ -8055,16 +8054,22 @@
 	const mouthWidth = 30;
 	const mouthArc = arc().innerRadius(mouthRadius).outerRadius(mouthWidth).startAngle(Math.PI * .5).endAngle(Math.PI * 1.5);
 
+	const BackgroundCircle = ({
+	  radius
+	}) => /*#__PURE__*/React.createElement("circle", {
+	  r: radius,
+	  fill: "gold",
+	  stroke: "black",
+	  strokeWidth: strokeWidth
+	});
+
 	const App = () => /*#__PURE__*/React.createElement("svg", {
 	  width: width,
 	  height: height
 	}, /*#__PURE__*/React.createElement("g", {
 	  transform: `translate(${centerX}, ${centerY})`
-	}, /*#__PURE__*/React.createElement("circle", {
-	  r: radius,
-	  fill: "gold",
-	  stroke: "black",
-	  strokeWidth: strokeWidth
+	}, /*#__PURE__*/React.createElement(BackgroundCircle, {
+	  radius: centerY - strokeWidth / 2
 	}), /*#__PURE__*/React.createElement("circle", {
 	  cx: -eyeOffsetX,
 	  cy: -eyeOffsetY,
