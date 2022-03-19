@@ -5,11 +5,6 @@ const height = 500;
 const circleRadius = 30;
 const initialMousePosition = { x: width / 2, y: height / 2 };
 
-const handleMouseMove = (event) => {
-	const { clientX, clientY } = event;
-	console.log({ clientX, clientY });
-};
-
 const App = () => {
 	const [mousePosition, setMousePosition] = useState(initialMousePosition);
 	const handleMouseMove = useCallback(
