@@ -4,11 +4,9 @@ const circleX = width / 2;
 const circleY = height / 2;
 
 const App = () => (
-  <svg>
- <circle>
-
- </circle>
-  </svg>
+	<svg>
+		<circle cx={circleX} cy={circleY}></circle>
+	</svg>
 );
 
 export default App;
