@@ -7868,7 +7868,15 @@
 	}
 	var csv = dsvParse(csvParse);
 
-	const csvURL = 'https://gist.githubusercontent.com/jctaylorjr/8ca53d2c9bf976bb9f0de77eeb36881a/raw/28db9dd8dcf8aabf603bb89359edc3cae6b18366/colors.csv'; // with fetch async and await
+	const message = data => {
+	  let message = '';
+	  message += Math.round(csvFormat(data).length / 1024) + ' kB\n';
+	  message += data.length + ' rows\n';
+	  message += data.columns.length + ' columns';
+	  return message;
+	};
+
+	const csvURL = 'https://gist.githubusercontent.com/jctaylorjr/8ca53d2c9bf976bb9f0de77eeb36881a/raw/28db9dd8dcf8aabf603bb89359edc3cae6b18366/colors.csv';
 	// const fetchText = async (url) => {
 	// 	const response = await fetch(url);
 	// 	return await response.text();
@@ -7877,16 +7885,12 @@
 	// 	console.log(d3.csvParse(text));
 	// });
 
-	csv(csvURL).then(data => {
-	  let message = '';
-	  message += Math.round(csvFormat(data).length / 1024) + ' kB\n';
-	  message += data.length + ' rows\n';
-	  message += data.columns.length + ' columns';
-	  document.getElementById('message-container').textContent = message;
-	});
-
 	const App = () => {
-	  return /*#__PURE__*/React.createElement(React.Fragment, null);
+	  const [data, setData] = react.exports.useState(null);
+	  react.exports.useEffect(() => {
+	    csv(csvURL).then(setData);
+	  }, []);
+	  return /*#__PURE__*/React.createElement("div", null, data ? message(data) : 'loading . . .');
 	};
 
 	const rootElement = document.getElementById('root');
