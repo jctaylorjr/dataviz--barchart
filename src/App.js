@@ -6,16 +6,19 @@ const csvURL =
 	'https://gist.githubusercontent.com/jctaylorjr/8ca53d2c9bf976bb9f0de77eeb36881a/raw/28db9dd8dcf8aabf603bb89359edc3cae6b18366/colors.csv';
 const width = 960;
 const height = 480;
+const centerX = width / 2;
+const centerY = height / 2;
 
-// with fetch async and await
-// const fetchText = async (url) => {
-// 	const response = await fetch(url);
-// 	return await response.text();
+// const ColorArc = ({ mouthRadius, mouthWidth }) => {
+// 	const colorArc = arc()
+// 		.innerRadius(mouthRadius)
+// 		.outerRadius(mouthWidth)
+// 		.startAngle(Math.PI * 0.5)
+// 		.endAngle(Math.PI * 1.5);
+// 	return <path d={colorArc()} />;
 // };
 
-// fetchText(csvURL).then((text) => {
-// 	console.log(d3.csvParse(text));
-// });
+const colorArc = d3.arc().innerRadius(50).outerRadius(200);
 
 const App = () => {
 	const [data, setData] = useState(null);
@@ -23,7 +26,25 @@ const App = () => {
 		d3.csv(csvURL).then(setData);
 	}, []);
 
-	return <div>{data ? message(data) : 'loading . . .'}</div>;
+	if (!data) {
+		return <div>loading . . .</div>;
+	}
+
+	return (
+		<svg width={width} height={height}>
+			<g transform={`translate(${centerX}, ${centerY})`}>
+				{data.map((d, i) => (
+					<path
+						fill={d['RGB hex value']}
+						d={colorArc({
+							startAngle: (i / data.length) * Math.PI * 2,
+							endAngle: Math.PI * 2,
+						})}
+					/>
+				))}
+			</g>
+		</svg>
+	);
 };
 
 export default App;
