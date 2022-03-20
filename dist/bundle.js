@@ -9318,6 +9318,12 @@
 	const csvURL = 'https://gist.githubusercontent.com/jctaylorjr/0b1e319eb86cce1c68ad6640d681fdd5/raw/a6119e9e5a66ee4312414cfc9c9f0e63ad859f8a/united-nations-population-prospects-2019.csv';
 	const width = 960;
 	const height = 480;
+	const margin = {
+	  top: 20,
+	  right: 20,
+	  bottom: 20,
+	  left: 20
+	};
 
 	const App = () => {
 	  const [data, setData] = react.exports.useState(null);
@@ -9336,17 +9342,21 @@
 	    return /*#__PURE__*/React.createElement("div", null, "loading . . .");
 	  }
 
-	  const yScale = band().domain(data.map(d => d.Country)).range([0, height]);
-	  const xScale = linear().domain([0, max(data, d => d.Population)]).range([0, width]);
+	  const innerHeight = height - margin.top - margin.bottom;
+	  const innerWidth = width - margin.left - margin.right;
+	  const yScale = band().domain(data.map(d => d.Country)).range([0, innerHeight]);
+	  const xScale = linear().domain([0, max(data, d => d.Population)]).range([0, innerWidth]);
 	  return /*#__PURE__*/React.createElement("svg", {
 	    width: width,
 	    height: height
+	  }, /*#__PURE__*/React.createElement("g", {
+	    transform: `translate(${margin.left}, ${margin.top})`
 	  }, data.map(d => /*#__PURE__*/React.createElement("rect", {
 	    x: 0,
 	    y: yScale(d.Country),
 	    width: xScale(d.Population),
 	    height: yScale.bandwidth()
-	  })));
+	  }))));
 	};
 
 	const rootElement = document.getElementById('root');
