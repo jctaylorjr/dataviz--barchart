@@ -1,23 +1,20 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import { format } from 'd3';
+import { useData } from './useData';
+import { AxisBottom } from './AxisBottom';
+import { AxisLeft } from './AxisLeft';
+import { Marks } from './Marks';
 
-const csvURL =
-	'https://gist.githubusercontent.com/jctaylorjr/0b1e319eb86cce1c68ad6640d681fdd5/raw/a6119e9e5a66ee4312414cfc9c9f0e63ad859f8a/united-nations-population-prospects-2019.csv';
 const width = 960;
 const height = 480;
-const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+const margin = { top: 50, right: 50, bottom: 50, left: 200 };
+const xAxisLabelOffset = 45;
+
+const siFormat = format('.2s');
+const xAxisTickFormat = (tickValue) => siFormat(tickValue).replace('G', 'B');
 
 const App = () => {
-	const [data, setData] = useState(null);
-	useEffect(() => {
-		const row = (d) => {
-			d.Population = +d['2020'];
-			return d;
-		};
-		d3.csv(csvURL, row).then((data) => {
-			setData(data.slice(0, 10));
-		});
-	}, []);
+	const data = useData();
 
 	if (!data) {
 		return <div>loading . . .</div>;
@@ -26,27 +23,44 @@ const App = () => {
 	const innerHeight = height - margin.top - margin.bottom;
 	const innerWidth = width - margin.left - margin.right;
 
+	const yValue = (d) => d.Country;
+	const xValue = (d) => d.Population;
+
 	const yScale = d3
 		.scaleBand()
-		.domain(data.map((d) => d.Country))
-		.range([0, innerHeight]);
+		.domain(data.map(yValue))
+		.range([0, innerHeight])
+		.paddingInner(0.2);
 
 	const xScale = d3
 		.scaleLinear()
-		.domain([0, d3.max(data, (d) => d.Population)])
+		.domain([0, d3.max(data, xValue)])
 		.range([0, innerWidth]);
 
 	return (
 		<svg width={width} height={height}>
 			<g transform={`translate(${margin.left}, ${margin.top})`}>
-				{data.map((d) => (
-					<rect
-						x={0}
-						y={yScale(d.Country)}
-						width={xScale(d.Population)}
-						height={yScale.bandwidth()}
-					/>
-				))}
+				<AxisBottom
+					xScale={xScale}
+					innerHeight={innerHeight}
+					tickFormat={xAxisTickFormat}
+				/>
+				<AxisLeft yScale={yScale} />
+				<text
+					className='axis-label'
+					x={innerWidth / 2}
+					y={innerHeight + xAxisLabelOffset}
+					textAnchor='middle'>
+					Population
+				</text>
+				<Marks
+					xScale={xScale}
+					yScale={yScale}
+					data={data}
+					xValue={xValue}
+					yValue={yValue}
+					tooltipFormat={xAxisTickFormat}
+				/>
 			</g>
 		</svg>
 	);

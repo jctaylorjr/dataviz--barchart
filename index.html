@@ -11,13 +11,31 @@
 			crossorigin
 			src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
 		></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
 			body {
 				margin: 0;
 				overflow: hidden;
+				font-family: 'Ubuntu', sans-serif;
 			}
 			pre {
 				font-size: 7em;
+			}
+			.tick line {
+				stroke: #c0c0bb;
+			}
+			.tick text {
+				fill: #635f5d;
+			}
+			.mark {
+				fill: #137b80;
+			}
+			.axis-label {
+				font-size: 1.5em;
+				fill: #635f5d;
 			}
 		</style>
 		<title>Barchart using D3 and React</title>

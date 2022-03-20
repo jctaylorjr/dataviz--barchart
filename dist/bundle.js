@@ -9316,20 +9316,11 @@
 	}
 
 	const csvURL = 'https://gist.githubusercontent.com/jctaylorjr/0b1e319eb86cce1c68ad6640d681fdd5/raw/a6119e9e5a66ee4312414cfc9c9f0e63ad859f8a/united-nations-population-prospects-2019.csv';
-	const width = 960;
-	const height = 480;
-	const margin = {
-	  top: 20,
-	  right: 20,
-	  bottom: 20,
-	  left: 20
-	};
-
-	const App = () => {
+	const useData = () => {
 	  const [data, setData] = react.exports.useState(null);
 	  react.exports.useEffect(() => {
 	    const row = d => {
-	      d.Population = +d['2020'];
+	      d.Population = +d['2020'] * 1000;
 	      return d;
 	    };
 
@@ -9337,6 +9328,72 @@
 	      setData(data.slice(0, 10));
 	    });
 	  }, []);
+	  return data;
+	};
+
+	const AxisBottom = ({
+	  xScale,
+	  innerHeight,
+	  tickFormat
+	}) => xScale.ticks().map(tickValue => /*#__PURE__*/React.createElement("g", {
+	  className: "tick",
+	  key: tickValue,
+	  transform: `translate(${xScale(tickValue)}, 0)`
+	}, /*#__PURE__*/React.createElement("line", {
+	  y2: innerHeight
+	}), /*#__PURE__*/React.createElement("text", {
+	  y: innerHeight + 3,
+	  style: {
+	    textAnchor: 'middle'
+	  },
+	  dy: ".71em"
+	}, tickFormat(tickValue))));
+
+	const AxisLeft = ({
+	  yScale
+	}) => yScale.domain().map(tickValue => /*#__PURE__*/React.createElement("g", {
+	  className: "tick"
+	}, /*#__PURE__*/React.createElement("text", {
+	  key: tickValue,
+	  style: {
+	    textAnchor: 'end'
+	  },
+	  dy: ".32em",
+	  x: -3,
+	  y: yScale(tickValue) + yScale.bandwidth() / 2
+	}, tickValue)));
+
+	const Marks = ({
+	  xScale,
+	  yScale,
+	  data,
+	  xValue,
+	  yValue,
+	  tooltipFormat
+	}) => data.map(d => /*#__PURE__*/React.createElement("rect", {
+	  className: "mark",
+	  key: yValue(d),
+	  x: 0,
+	  y: yScale(yValue(d)),
+	  width: xScale(xValue(d)),
+	  height: yScale.bandwidth()
+	}, /*#__PURE__*/React.createElement("title", null, tooltipFormat(xValue(d)))));
+
+	const width = 960;
+	const height = 480;
+	const margin = {
+	  top: 50,
+	  right: 50,
+	  bottom: 50,
+	  left: 200
+	};
+	const xAxisLabelOffset = 45;
+	const siFormat = format('.2s');
+
+	const xAxisTickFormat = tickValue => siFormat(tickValue).replace('G', 'B');
+
+	const App = () => {
+	  const data = useData();
 
 	  if (!data) {
 	    return /*#__PURE__*/React.createElement("div", null, "loading . . .");
@@ -9344,19 +9401,37 @@
 
 	  const innerHeight = height - margin.top - margin.bottom;
 	  const innerWidth = width - margin.left - margin.right;
-	  const yScale = band().domain(data.map(d => d.Country)).range([0, innerHeight]);
-	  const xScale = linear().domain([0, max(data, d => d.Population)]).range([0, innerWidth]);
+
+	  const yValue = d => d.Country;
+
+	  const xValue = d => d.Population;
+
+	  const yScale = band().domain(data.map(yValue)).range([0, innerHeight]).paddingInner(0.2);
+	  const xScale = linear().domain([0, max(data, xValue)]).range([0, innerWidth]);
 	  return /*#__PURE__*/React.createElement("svg", {
 	    width: width,
 	    height: height
 	  }, /*#__PURE__*/React.createElement("g", {
 	    transform: `translate(${margin.left}, ${margin.top})`
-	  }, data.map(d => /*#__PURE__*/React.createElement("rect", {
-	    x: 0,
-	    y: yScale(d.Country),
-	    width: xScale(d.Population),
-	    height: yScale.bandwidth()
-	  }))));
+	  }, /*#__PURE__*/React.createElement(AxisBottom, {
+	    xScale: xScale,
+	    innerHeight: innerHeight,
+	    tickFormat: xAxisTickFormat
+	  }), /*#__PURE__*/React.createElement(AxisLeft, {
+	    yScale: yScale
+	  }), /*#__PURE__*/React.createElement("text", {
+	    className: "axis-label",
+	    x: innerWidth / 2,
+	    y: innerHeight + xAxisLabelOffset,
+	    textAnchor: "middle"
+	  }, "Population"), /*#__PURE__*/React.createElement(Marks, {
+	    xScale: xScale,
+	    yScale: yScale,
+	    data: data,
+	    xValue: xValue,
+	    yValue: yValue,
+	    tooltipFormat: xAxisTickFormat
+	  })));
 	};
 
 	const rootElement = document.getElementById('root');
