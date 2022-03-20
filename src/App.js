@@ -18,7 +18,7 @@ const centerY = height / 2;
 // 	return <path d={colorArc()} />;
 // };
 
-const colorArc = d3.arc().innerRadius(50).outerRadius(200);
+const colorArc = d3.arc().innerRadius(100).outerRadius(200);
 
 const App = () => {
 	const [data, setData] = useState(null);
@@ -30,21 +30,27 @@ const App = () => {
 		return <div>loading . . .</div>;
 	}
 
+	const colorPie = d3.pie().value(1);
+
 	return (
 		<svg width={width} height={height}>
 			<g transform={`translate(${centerX}, ${centerY})`}>
-				{data.map((d, i) => (
-					<path
-						fill={d['RGB hex value']}
-						d={colorArc({
-							startAngle: (i / data.length) * Math.PI * 2,
-							endAngle: Math.PI * 2,
-						})}
-					/>
+				{colorPie(data).map((d) => (
+					<path fill={d.data['RGB hex value']} d={colorArc(d)} />
 				))}
 			</g>
 		</svg>
 	);
 };
+
+// {data.map((d, i) => (
+// 	<path
+// 		fill={d['RGB hex value']}
+// 		d={colorArc({
+// 			startAngle: (i / data.length) * Math.PI * 2,
+// 			endAngle: ((i + 1) / data.length) * Math.PI * 2,
+// 		})}
+// 	/>
+// ))}
 
 export default App;
